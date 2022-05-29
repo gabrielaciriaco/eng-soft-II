@@ -41,27 +41,6 @@ products = [
         "category": "higiene pessoal",
         "quantity": 50,
     },
-    {
-        "id": 5,
-        "name": "geleia de damasco",
-        "price": 18,
-        "category": "comida",
-        "quantity": 200,
-    },
-    {
-        "id": 6,
-        "name": "doce de leite",
-        "price": 20,
-        "category": "comida",
-        "quantity": 56,
-    },
-    {
-        "id": 7,
-        "name": "camisa",
-        "price": 150,
-        "category": "roupa",
-        "quantity": 70,
-    },
 ]
 
 
@@ -413,6 +392,8 @@ def list_category_products():
 
     categories = map(lambda product: product["category"], products)
 
+    clear_console()
+
     if category not in categories:
         print("Categoria vazia!")
         print("\nDigite ENTER para continuar")
@@ -448,12 +429,36 @@ def list_category_products():
     input()
 
 
+def delete_category_products():
+    print("Digite a categoria desejada:")
+    category = input()
+
+    categories = map(lambda product: product["category"], products)
+
+    clear_console()
+
+    if category not in categories:
+        print("Categoria vazia!")
+        print("\nDigite ENTER para continuar")
+        input()
+        return
+
+    for (index, product) in enumerate(products):
+        if product["category"] == category:
+            product_id = product["id"]
+            del products[index]
+            print(f"Produto de id {product_id}")
+
+    print("\nDigite ENTER para continuar")
+    input()
+
+
 def main():
     clear_console()
 
     print("==== Sistema de controle de estoque ====\n")
 
-    commands_table = [
+    commands_table= [
         ["0", "Sair"],
         ["1", "Listar itens do estoque"],
         ["2", "Mostrar produto com seus detalhes"],
@@ -467,13 +472,14 @@ def main():
         ["10", "Comprar produto"],
         ["11", "Comprar produtos"],
         ["12", "Listar produtos de categoria"],
+        ["13", "Deletar produtos de categoria"],
     ]
 
     while (1):
         print(tabulate(commands_table, ["Cód.", "Comando"]))
         print("\nDigite o código do comando desejado:")
 
-        n = int(input())
+        n= int(input())
 
         clear_console()
 
@@ -503,6 +509,8 @@ def main():
             buy_products()
         elif (n == 12):
             list_category_products()
+        elif (n == 13):
+            delete_category_products()
         else:
             print("Comando inválido")
 
