@@ -453,66 +453,64 @@ def delete_category_products():
     input()
 
 
+def handle_invalid_command():
+    print("Comando Inválido!")
+    print("\nDigite ENTER para continuar")
+    input()
+
+
+commands_table = [
+    ["0", "Sair"],
+    ["1", "Listar itens do estoque"],
+    ["2", "Mostrar produto com seus detalhes"],
+    ["3", "Inserir produto"],
+    ["4", "Atualizar produto"],
+    ["5", "Deletar produto"],
+    ["6", "Deletar produtos"],
+    ["7", "Deletar todos os produtos"],
+    ["8", "Vender produto"],
+    ["9", "Vender produtos"],
+    ["10", "Comprar produto"],
+    ["11", "Comprar produtos"],
+    ["12", "Listar produtos de categoria"],
+    ["13", "Deletar produtos de categoria"],
+]
+
+commands = {
+    1: list_products,
+    2: read_product,
+    3: create_product,
+    4: update_product,
+    5: delete_product,
+    6: delete_products,
+    7: delete_all_products,
+    8: sell_product,
+    9: sell_products,
+    10: buy_product,
+    11: buy_products,
+    12: list_category_products,
+    13: delete_category_products,
+    "invalid": handle_invalid_command
+}
+
+
 def main():
     clear_console()
 
     print("==== Sistema de controle de estoque ====\n")
 
-    commands_table= [
-        ["0", "Sair"],
-        ["1", "Listar itens do estoque"],
-        ["2", "Mostrar produto com seus detalhes"],
-        ["3", "Inserir produto"],
-        ["4", "Atualizar produto"],
-        ["5", "Deletar produto"],
-        ["6", "Deletar produtos"],
-        ["7", "Deletar todos os produtos"],
-        ["8", "Vender produto"],
-        ["9", "Vender produtos"],
-        ["10", "Comprar produto"],
-        ["11", "Comprar produtos"],
-        ["12", "Listar produtos de categoria"],
-        ["13", "Deletar produtos de categoria"],
-    ]
-
     while (1):
         print(tabulate(commands_table, ["Cód.", "Comando"]))
         print("\nDigite o código do comando desejado:")
 
-        n= int(input())
+        n = int(input())
 
         clear_console()
 
         if (n == 0):
             break
-        elif (n == 1):
-            list_products()
-        elif (n == 2):
-            read_product()
-        elif (n == 3):
-            create_product()
-        elif (n == 4):
-            update_product()
-        elif (n == 5):
-            delete_product()
-        elif (n == 6):
-            delete_products()
-        elif (n == 7):
-            delete_all_products()
-        elif (n == 8):
-            sell_product()
-        elif (n == 9):
-            sell_products()
-        elif (n == 10):
-            buy_product()
-        elif (n == 11):
-            buy_products()
-        elif (n == 12):
-            list_category_products()
-        elif (n == 13):
-            delete_category_products()
         else:
-            print("Comando inválido")
+            commands.get(n, commands["invalid"])()
 
         clear_console()
 
