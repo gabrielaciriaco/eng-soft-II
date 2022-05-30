@@ -124,24 +124,24 @@ def create_product():
 def update_product():
     print("Digite o ID do produto:")
     product_id = int(input())
-    product_found = False
+    product_index = None
 
     clear_console()
 
-    for product in products:
+    for (index, product) in enumerate(products):
         if product["id"] == product_id:
-            product_found = True
+            product_index = index
             product_data = [[product["id"], product["name"],
                              product["price"], product["category"], product["quantity"]]]
             print(tabulate(product_data, [
                   "ID", "Nome", "Preço", "Categoria", "Quantidade"]))
 
-    if product_found == False:
+    print("\n")
+
+    if product_index == None:
         print("Produto não encontrado!\nDigite ENTER para continuar")
         input()
         return
-
-    print("\n")
 
     attributes_table = [
         ["1", "id"],
@@ -161,20 +161,18 @@ def update_product():
         if attribute[0] == attribute_id:
             attribute_name = attribute[1]
 
+    clear_console()
+
     if attribute_name != None:
         print("\nDigite o novo valor:")
         new_value = input()
-        for (index, product) in enumerate(products):
-            if product["id"] == product_id:
-                products[index][attribute_name] = new_value
-                print("\nProduto atualizado com sucesso!")
-                print("\nDigite ENTER para continuar")
-                input()
-
+        products[product_index][attribute_name] = new_value
+        print("\nProduto atualizado com sucesso!")
     else:
         print("\nCódigo do atributo inválido!")
-        print("\nDigite ENTER para continuar")
-        input()
+
+    print("\nDigite ENTER para continuar")
+    input()
 
 
 def delete_product():
