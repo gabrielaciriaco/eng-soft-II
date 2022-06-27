@@ -118,4 +118,23 @@ class TestInventory(unittest.TestCase):
         
         self.assertEqual(inventory.list_products(), [])
         
+    def test_sell_product_should_return_updated_product(self):
+        inventory = Inventory()
+        inventory.create_product(5, "test", 10, "test", 10)
+        updatedProduct = inventory.sell_product(5, 2)
+        
+        self.assertEqual(updatedProduct, {
+            "id": 5,
+            "name": "test",
+            "price": 10,
+            "category": "test",
+            "quantity": 8,
+        }) 
 
+    def test_sell_product_should_raise_exception_if_id_not_exists(self):
+        inventory = Inventory()
+
+        with self.assertRaises(Exception) as error:
+            inventory.sell_product(5, 2)
+        
+        self.assertEqual(str(error.exception), 'Produto não encontrado!')
