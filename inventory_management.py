@@ -6,6 +6,7 @@ import random
 from turtle import clear
 from tabulate import tabulate
 import os
+from inventory import Inventory
 
 
 def clear_console():
@@ -44,9 +45,9 @@ products = [
 ]
 
 
-def list_products():
+def list_products(inventory):
     data_table = []
-    for product in products:
+    for product in inventory.list_products():
         product_data = [product["id"], product["name"], product["quantity"]]
         data_table.append(product_data)
 
@@ -55,20 +56,16 @@ def list_products():
     input()
 
 
-def read_product():
+def read_product(inventory):
     print("Digite o ID do produto")
     product_id = int(input())
 
     clear_console()
 
-    ids = map(lambda product: product["id"], products)
+    try:
+        product = inventory.get_product(product_id)
 
-    if product_id not in ids:
-        print("ID de produto não econtrado")
-
-    for product in products:
-        if product["id"] == product_id:
-            product_data = [[
+        product_data = [[
                 product["id"],
                 product["name"],
                 product["price"],
@@ -76,15 +73,17 @@ def read_product():
                 product["quantity"]
             ]]
 
-            headers = [
-                "ID",
-                "Nome",
-                "Preço",
-                "Categoria",
-                "Quantidade"
-            ]
+        headers = [
+            "ID",
+            "Nome",
+            "Preço",
+            "Categoria",
+            "Quantidade"
+        ]
 
-            print(tabulate(product_data, headers))
+        print(tabulate(product_data, headers))
+    except Exception as error:
+        print(str(error))
 
     print("\nPressione ENTER para continuar")
     input()
@@ -484,6 +483,39 @@ commands = {
 
 
 def main():
+    inventory = Inventory()
+
+    inventory.products = [
+        {
+            "id": 1,
+            "name": "pinho sol",
+            "price": 10,
+            "category": "limpeza",
+            "quantity": 10,
+        },
+        {
+            "id": 2,
+            "name": "água sanitária",
+            "price": 8,
+            "category": "limpeza",
+            "quantity": 100,
+        },
+        {
+            "id": 3,
+            "name": "biscoito água e sal",
+            "price": 2,
+            "category": "comida",
+            "quantity": 500,
+        },
+        {
+            "id": 4,
+            "name": "pasta de dente",
+            "price": 9,
+            "category": "higiene pessoal",
+            "quantity": 50,
+        },
+    ]
+
     clear_console()
 
     print("==== Sistema de controle de estoque ====\n")
@@ -499,7 +531,7 @@ def main():
         if (n == 0):
             break
         else:
-            commands.get(n, commands["invalid"])()
+            commands.get(n, commands["invalid"])(inventory)
 
         clear_console()
 

@@ -6,6 +6,18 @@ class Inventory:
     
     def list_products(self):
         return self.products
+
+    def get_product(self, product_id):
+        product_index = None
+
+        for (index, product) in enumerate(self.products):
+            if product["id"] == product_id:
+                product_index = index
+
+        if product_index == None:
+            raise Exception("Produto não encontrado!")
+
+        return self.products[product_index]
     
     def create_product(self, product_id, name, price, category, quantity):
         ids = map(lambda product: product["id"], self.products)
