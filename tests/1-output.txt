@@ -18,28 +18,4 @@
     13  Deletar produtos de categoria
 
 Digite o código do comando desejado:
-[H[2J[3JDigite o ID do produto
-[H[2J[3J  ID  Nome         Preço  Categoria      Quantidade
-----  ---------  -------  -----------  ------------
-   1  pinho sol       10  limpeza                10
-
-Pressione ENTER para continuar
-[H[2J[3J  Cód.  Comando
-------  ---------------------------------
-     0  Sair
-     1  Listar itens do estoque
-     2  Mostrar produto com seus detalhes
-     3  Inserir produto
-     4  Atualizar produto
-     5  Deletar produto
-     6  Deletar produtos
-     7  Deletar todos os produtos
-     8  Vender produto
-     9  Vender produtos
-    10  Comprar produto
-    11  Comprar produtos
-    12  Listar produtos de categoria
-    13  Deletar produtos de categoria
-
-Digite o código do comando desejado:
 [H[2J[3J
