@@ -193,7 +193,7 @@ def delete_product(inventory):
     input()
 
 
-def delete_products():
+def delete_products(inventory):
     print("Digite os IDs dos produtos removidos, separados por vírgula:")
     product_ids = input().split(",")
 
@@ -202,22 +202,14 @@ def delete_products():
 
     for product_id in product_ids:
         clear_console()
-        product_found = False
-
-        for (index, product) in enumerate(products):
-            if product["id"] == product_id:
-                product_found = True
-                del products[index]
-
-        if product_found == False:
-            print(
-                f"Não foi possível encontrar um produto com o ID {product_id}")
-            print("\nDigite ENTER para continuar")
-            input()
-        else:
+        try:
+            inventory.delete_product(product_id)
             print(f"Produto de ID {product_id} removido")
-            print("\nDigite ENTER para continuar")
-            input()
+        except Exception as error:
+            print(str(error))
+        
+        print("\nDigite ENTER para continuar")
+        input()
 
 
 def delete_all_products():
