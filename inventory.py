@@ -2,36 +2,7 @@ from tabulate import tabulate
 
 class Inventory:
     def __init__(self):
-        self.products = [
-            {
-                "id": 1,
-                "name": "pinho sol",
-                "price": 10,
-                "category": "limpeza",
-                "quantity": 10,
-            },
-            {
-                "id": 2,
-                "name": "água sanitária",
-                "price": 8,
-                "category": "limpeza",
-                "quantity": 100,
-            },
-            {
-                "id": 3,
-                "name": "biscoito água e sal",
-                "price": 2,
-                "category": "comida",
-                "quantity": 500,
-            },
-            {
-                "id": 4,
-                "name": "pasta de dente",
-                "price": 9,
-                "category": "higiene pessoal",
-                "quantity": 50,
-            },
-        ]
+        self.products = []
     
     def list_products(self):
         return self.products
@@ -52,6 +23,13 @@ class Inventory:
             raise Exception("ID já está em uso!")
 
     def update_product(self, product_id, attribute_name, new_value):
+        attributes = [
+            "id",
+            "name",
+            "price",
+            "category",
+            "quantity",
+        ]
         product_index = None
 
         for (index, product) in enumerate(self.products):
@@ -59,7 +37,10 @@ class Inventory:
                 product_index = index
 
         if product_index == None:
-            raise Exception("Produto não encontrado!\nDigite ENTER para continuar")
+            raise Exception("Produto não encontrado!")
+
+        if attribute_name not in attributes:
+            raise Exception("Atributo inválido!")
 
         self.products[product_index][attribute_name] = new_value
 
