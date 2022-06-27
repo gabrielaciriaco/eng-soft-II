@@ -88,6 +88,26 @@ class TestInventory(unittest.TestCase):
         
         self.assertEqual(str(error.exception), 'Atributo inválido!')
 
+    def test_delete_product_should_return_deleted_product_id(self):
+        inventory = Inventory()
+        inventory.create_product(5, "test", 10, "test", 10)
+        deleted_product_id = inventory.delete_product(5)
         
+        self.assertEqual(deleted_product_id, 5) 
+
+    def test_delete_product_should_update_product_list(self):
+        inventory = Inventory()
+        inventory.create_product(5, "test", 10, "test", 10)
+        inventory.delete_product(5)
+        
+        self.assertEqual(inventory.list_products(), [])
+
+    def test_delete_product_should_raise_exception_if_id_not_exists(self):
+        inventory = Inventory()
+
+        with self.assertRaises(Exception) as error:
+            inventory.delete_product(5)
+        
+        self.assertEqual(str(error.exception), 'Produto não encontrado!')
         
 
