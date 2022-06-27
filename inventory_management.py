@@ -238,7 +238,7 @@ def sell_product(inventory):
     input()
 
 
-def sell_products():
+def sell_products(inventory):
     print("Digite os IDs dos produtos comprados, separados por vírgula:")
     product_ids = map(lambda product_id: int(product_id), input().split(","))
 
@@ -246,25 +246,14 @@ def sell_products():
         clear_console()
         print(f"Digite a quantidade do produto de ID {product_id}")
         quantity = int(input())
-        product_updated = False
-        invalid_quantity = False
         clear_console()
 
-        for (index, product) in enumerate(products):
-            if product["id"] == product_id:
-                if quantity > products[index]["quantity"]:
-                    print("Quantidade não pode ser maior que o disponível no estoque")
-                    invalid_quantity = True
-                else:
-                    products[index]["quantity"] -= quantity
-                    product_updated = True
-
-        if invalid_quantity == False and product_updated == False:
-            print(
-                f"Não foi possível encontrar um produto com o ID {product_id}")
-        else:
+        try:
+            inventory.sell_product(product_id, quantity)
             print(f"Quantidade do produto de ID {product_id} atualizada")
-
+        except Exception as error:
+            print(str(error))
+        
         print("\nDigite ENTER para continuar")
         input()
 
