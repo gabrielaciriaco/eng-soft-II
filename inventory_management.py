@@ -89,35 +89,26 @@ def read_product(inventory):
     input()
 
 
-def create_product():
+def create_product(inventory):
     print("Digite o id do produto:")
     product_id = int(input())
+    print("Digite o nome do produto:")
+    name = input()
+    print("Digite o valor unitário do produto:")
+    price = input()
+    print("Digite a categoria do produto:")
+    category = input()
+    print("Digite a quantidade do produto")
+    quantity = input()
 
-    ids = map(lambda product: product["id"], products)
+    try:
+        new_product = inventory.create_product(product_id, name, price, category, quantity)
+        print("Produto \""+str(new_product["id"])+"\" adicionado com sucesso!")
+    except Exception as error:
+        print(str(error))
 
-    if product_id not in ids:
-        print("Digite o nome do produto:")
-        name = input()
-        print("Digite o valor unitário do produto:")
-        price = input()
-        print("Digite a categoria do produto:")
-        category = input()
-        print("Digite a quantidade do produto")
-        quantity = input()
-        products.append({
-            'id': product_id,
-            'name': name,
-            'price': price,
-            'category': category,
-            'quantity': quantity,
-        })
-        print("Produto \""+str(product_id)+"\" adicionado com sucesso!")
-        print("\nDigite ENTER para continuar")
-        input()
-    else:
-        print("ID já está em uso!")
-        print("\nDigite ENTER para continuar")
-        input()
+    print("\nDigite ENTER para continuar")
+    input()
 
 
 def update_product():
