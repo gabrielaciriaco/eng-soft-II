@@ -26,4 +26,4 @@ jobs:
         pip install tabulate
     - name: Test with unittest
       run: |
-        system_tests.sh
+        ./system_tests.sh
