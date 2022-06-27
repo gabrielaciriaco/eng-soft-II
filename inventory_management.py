@@ -258,43 +258,26 @@ def sell_products(inventory):
         input()
 
 
-def buy_product():
+def buy_product(inventory):
     print("Digite o ID do produto comprado:")
     product_id = int(input())
 
     clear_console()
     print(f"Digite a quantidade do produto de ID {product_id}")
     quantity = int(input())
-    product_found = False
-    invalid_quantity = False
     clear_console()
 
-    for (index, product) in enumerate(products):
-        if product["id"] == product_id:
-            product_found = True
-            if quantity < 1:
-                invalid_quantity = True
-                print("Quantidade não pode ser menor que 1")
-            else:
-                products[index]["quantity"] += quantity
-
-    if invalid_quantity == True:
-        print("\nDigite ENTER para continuar")
-        input()
-        return
-
-    if product_found == False:
-        print(
-            f"Não foi possível encontrar um produto com o ID {product_id}")
-        print("\nDigite ENTER para continuar")
-        input()
-    else:
+    try:
+        inventory.buy_product(product_id, quantity)
         print(f"Quantidade do produto de ID {product_id} atualizada")
-        print("\nDigite ENTER para continuar")
-        input()
+    except Exception as error:
+        print(str(error))
+
+    print("\nDigite ENTER para continuar")
+    input()
 
 
-def buy_products():
+def buy_products(inventory):
     print("Digite os IDs dos produtos comprados, separados por vírgula:")
     product_ids = input().split(",")
 
@@ -305,33 +288,16 @@ def buy_products():
         clear_console()
         print(f"Digite a quantidade do produto de ID {product_id}")
         quantity = int(input())
-        product_found = False
-        invalid_quantity = False
         clear_console()
 
-        for (index, product) in enumerate(products):
-            if product["id"] == product_id:
-                product_found = True
-                if quantity < 1:
-                    invalid_quantity = True
-                    print("Quantidade não pode ser menor que 1")
-                else:
-                    products[index]["quantity"] += quantity
-
-        if invalid_quantity == True:
-            print("\nDigite ENTER para continuar")
-            input()
-            continue
-
-        if product_found == False:
-            print(
-                f"Não foi possível encontrar um produto com o ID {product_id}")
-            print("\nDigite ENTER para continuar")
-            input()
-        else:
+        try:
+            inventory.buy_product(product_id, quantity)
             print(f"Quantidade do produto de ID {product_id} atualizada")
-            print("\nDigite ENTER para continuar")
-            input()
+        except Exception as error:
+            print(str(error))
+        
+        print("\nDigite ENTER para continuar")
+        input()
 
 
 def list_category_products():
