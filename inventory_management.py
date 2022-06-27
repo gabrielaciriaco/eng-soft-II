@@ -177,27 +177,20 @@ def update_product(inventory):
     input()
 
 
-def delete_product():
+def delete_product(inventory):
     print("Digite o ID do produto:")
     product_id = int(input())
-    product_index = None
 
     clear_console()
 
-    for (index, product) in enumerate(products):
-        if product["id"] == product_id:
-            product_index = index
-
-    del products[product_index]
-
-    if product_index != None:
+    try:
+        inventory.delete_product(product_id)
         print("Produto removido com sucesso!")
-        print("\nDigite ENTER para continuar")
-        input()
-    else:
-        print("Código do atributo inválido!")
-        print("\nDigite ENTER para continuar")
-        input()
+    except Exception as error:
+        print(str(error))
+
+    print("\nDigite ENTER para continuar")
+    input()
 
 
 def delete_products():
