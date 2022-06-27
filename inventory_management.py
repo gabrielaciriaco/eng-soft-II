@@ -111,27 +111,39 @@ def create_product(inventory):
     input()
 
 
-def update_product():
+def update_product(inventory):
     print("Digite o ID do produto:")
     product_id = int(input())
-    product_index = None
 
     clear_console()
 
-    for (index, product) in enumerate(products):
-        if product["id"] == product_id:
-            product_index = index
-            product_data = [[product["id"], product["name"],
-                             product["price"], product["category"], product["quantity"]]]
-            print(tabulate(product_data, [
-                  "ID", "Nome", "Preço", "Categoria", "Quantidade"]))
+    try:
+        product = inventory.get_product(product_id)
 
-    print("\n")
+        product_data = [[
+                product["id"],
+                product["name"],
+                product["price"],
+                product["category"],
+                product["quantity"]
+            ]]
 
-    if product_index == None:
-        print("Produto não encontrado!\nDigite ENTER para continuar")
+        headers = [
+            "ID",
+            "Nome",
+            "Preço",
+            "Categoria",
+            "Quantidade"
+        ]
+
+        print(tabulate(product_data, headers))
+    except Exception as error:
+        print(str(error))
+        print("\nDigite ENTER para continuar")
         input()
         return
+
+    print("\n")
 
     attributes_table = [
         ["1", "id"],
@@ -153,13 +165,13 @@ def update_product():
 
     clear_console()
 
-    if attribute_name != None:
+    try:
         print("\nDigite o novo valor:")
         new_value = input()
-        products[product_index][attribute_name] = new_value
+        inventory.update_product(product_id, attribute_name, new_value)
         print("\nProduto atualizado com sucesso!")
-    else:
-        print("\nCódigo do atributo inválido!")
+    except Exception as error:
+        print(str(error))
 
     print("\nDigite ENTER para continuar")
     input()
