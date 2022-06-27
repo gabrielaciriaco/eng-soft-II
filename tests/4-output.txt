@@ -19,6 +19,10 @@
 
 Digite o código do comando desejado:
 [H[2J[3JDigite o id do produto:
+Digite o nome do produto:
+Digite o valor unitário do produto:
+Digite a categoria do produto:
+Digite a quantidade do produto
 ID já está em uso!
 
 Digite ENTER para continuar
