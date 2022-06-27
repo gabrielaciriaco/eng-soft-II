@@ -13,38 +13,6 @@ def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-products = [
-    {
-        "id": 1,
-        "name": "pinho sol",
-        "price": 10,
-        "category": "limpeza",
-        "quantity": 10,
-    },
-    {
-        "id": 2,
-        "name": "água sanitária",
-        "price": 8,
-        "category": "limpeza",
-        "quantity": 100,
-    },
-    {
-        "id": 3,
-        "name": "biscoito água e sal",
-        "price": 2,
-        "category": "comida",
-        "quantity": 500,
-    },
-    {
-        "id": 4,
-        "name": "pasta de dente",
-        "price": 9,
-        "category": "higiene pessoal",
-        "quantity": 50,
-    },
-]
-
-
 def list_products(inventory):
     data_table = []
     for product in inventory.list_products():
@@ -300,68 +268,42 @@ def buy_products(inventory):
         input()
 
 
-def list_category_products():
+def list_category_products(inventory):
     print("Digite a categoria desejada:")
     category = input()
 
-    categories = map(lambda product: product["category"], products)
-
     clear_console()
 
-    if category not in categories:
-        print("Categoria vazia!")
-        print("\nDigite ENTER para continuar")
-        input()
-        return
+    try:
+        products_table = inventory.list_category_products(category)
+        headers = [
+            "ID",
+            "Nome",
+            "Preço",
+            "Categoria",
+            "Quantidade"
+        ]
 
-    headers = [
-        "ID",
-        "Nome",
-        "Preço",
-        "Categoria",
-        "Quantidade"
-    ]
-
-    products_table = []
-
-    clear_console()
-
-    for product in products:
-        if product["category"] == category:
-            product_data = [
-                product["id"],
-                product["name"],
-                product["price"],
-                product["category"],
-                product["quantity"]
-            ]
-            products_table.append(product_data)
-
-    print(tabulate(products_table, headers))
+        print(tabulate(products_table, headers))
+    except Exception as error:
+        print(str(error))
 
     print("\nDigite ENTER para continuar")
     input()
 
 
-def delete_category_products():
+def delete_category_products(inventory):
     print("Digite a categoria desejada:")
     category = input()
 
-    categories = map(lambda product: product["category"], products)
-
     clear_console()
 
-    if category not in categories:
-        print("Categoria vazia!")
-        print("\nDigite ENTER para continuar")
-        input()
-        return
-
-    for (index, product) in enumerate(products):
-        if product["category"] == category:
-            product_id = product["id"]
-            del products[index]
+    try:
+        deleted_product_ids = inventory.delete_category_products(category)
+        for (_, product_id) in enumerate(deleted_product_ids):
             print(f"Produto de id {product_id}")
+    except Exception as error:
+        print(str(error))
 
     print("\nDigite ENTER para continuar")
     input()
