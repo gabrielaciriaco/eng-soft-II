@@ -1,4 +1,4 @@
-name: Python app
+name: System tests
 
 on:
   push:
@@ -26,4 +26,5 @@ jobs:
         pip install tabulate
     - name: Test with unittest
       run: |
+        chmod +x ./system_tests.sh
         ./system_tests.sh
