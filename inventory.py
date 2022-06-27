@@ -82,11 +82,11 @@ class Inventory:
                 product_index = index
 
         if product_index != None:
-            if quantity > self.products[index]["quantity"]:
+            if quantity > self.products[product_index]["quantity"]:
                 raise Exception("Quantidade não pode ser maior que o disponível no estoque")
             else:
-                self.products[index]["quantity"] -= quantity
-                return self.products[index]
+                self.products[product_index]["quantity"] -= quantity
+                return self.products[product_index]
         else:
             raise Exception("Produto não encontrado!")
 
@@ -101,8 +101,8 @@ class Inventory:
             if quantity < 1:
                 raise Exception("Quantidade não pode ser menor que 1")
             else:
-                self.products[index]["quantity"] += quantity
-                return self.products[index]
+                self.products[product_index]["quantity"] += quantity
+                return self.products[product_index]
         else:
             raise Exception("Produto não encontrado!")
     
