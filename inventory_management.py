@@ -212,8 +212,8 @@ def delete_products(inventory):
         input()
 
 
-def delete_all_products():
-    products.clear()
+def delete_all_products(inventory):
+    inventory.delete_all_products()
     print("Todos os produtos foram removidos com sucesso!")
     print("\nDigite ENTER para continuar")
     input()
