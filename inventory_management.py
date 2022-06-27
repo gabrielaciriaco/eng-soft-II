@@ -219,40 +219,23 @@ def delete_all_products(inventory):
     input()
 
 
-def sell_product():
+def sell_product(inventory):
     print("Digite ID do produtos comprado:")
     product_id = int(input())
 
     clear_console()
     print(f"Digite a quantidade do produto de ID {product_id}")
     quantity = int(input())
-    product_found = False
-    invalid_quantity = False
     clear_console()
 
-    for (index, product) in enumerate(products):
-        if product["id"] == product_id:
-            product_found = True
-            if quantity > products[index]["quantity"]:
-                invalid_quantity = True
-                print("Quantidade não pode ser maior que o disponível no estoque")
-            else:
-                products[index]["quantity"] -= quantity
-
-    if invalid_quantity == True:
-        print("\nDigite ENTER para continuar")
-        input()
-        return
-
-    if product_found == False:
-        print(
-            f"Não foi possível encontrar um produto com o ID {product_id}")
-        print("\nDigite ENTER para continuar")
-        input()
-    else:
+    try:
+        inventory.sell_product(product_id, quantity)
         print(f"Quantidade do produto de ID {product_id} atualizada")
-        print("\nDigite ENTER para continuar")
-        input()
+    except Exception as error:
+        print(str(error))
+    
+    print("\nDigite ENTER para continuar")
+    input()
 
 
 def sell_products():
