@@ -6,6 +6,7 @@ import random
 from turtle import clear
 from tabulate import tabulate
 import os
+from inventory import Inventory
 
 
 def clear_console():
@@ -44,9 +45,9 @@ products = [
 ]
 
 
-def list_products():
+def list_products(inventory):
     data_table = []
-    for product in products:
+    for product in inventory.list_products():
         product_data = [product["id"], product["name"], product["quantity"]]
         data_table.append(product_data)
 
@@ -55,20 +56,16 @@ def list_products():
     input()
 
 
-def read_product():
+def read_product(inventory):
     print("Digite o ID do produto")
     product_id = int(input())
 
     clear_console()
 
-    ids = map(lambda product: product["id"], products)
+    try:
+        product = inventory.get_product(product_id)
 
-    if product_id not in ids:
-        print("ID de produto não econtrado")
-
-    for product in products:
-        if product["id"] == product_id:
-            product_data = [[
+        product_data = [[
                 product["id"],
                 product["name"],
                 product["price"],
@@ -76,72 +73,77 @@ def read_product():
                 product["quantity"]
             ]]
 
-            headers = [
-                "ID",
-                "Nome",
-                "Preço",
-                "Categoria",
-                "Quantidade"
-            ]
+        headers = [
+            "ID",
+            "Nome",
+            "Preço",
+            "Categoria",
+            "Quantidade"
+        ]
 
-            print(tabulate(product_data, headers))
+        print(tabulate(product_data, headers))
+    except Exception as error:
+        print(str(error))
 
     print("\nPressione ENTER para continuar")
     input()
 
 
-def create_product():
+def create_product(inventory):
     print("Digite o id do produto:")
     product_id = int(input())
+    print("Digite o nome do produto:")
+    name = input()
+    print("Digite o valor unitário do produto:")
+    price = input()
+    print("Digite a categoria do produto:")
+    category = input()
+    print("Digite a quantidade do produto")
+    quantity = input()
 
-    ids = map(lambda product: product["id"], products)
+    try:
+        new_product = inventory.create_product(product_id, name, price, category, quantity)
+        print("Produto \""+str(new_product["id"])+"\" adicionado com sucesso!")
+    except Exception as error:
+        print(str(error))
 
-    if product_id not in ids:
-        print("Digite o nome do produto:")
-        name = input()
-        print("Digite o valor unitário do produto:")
-        price = input()
-        print("Digite a categoria do produto:")
-        category = input()
-        print("Digite a quantidade do produto")
-        quantity = input()
-        products.append({
-            'id': product_id,
-            'name': name,
-            'price': price,
-            'category': category,
-            'quantity': quantity,
-        })
-        print("Produto \""+str(product_id)+"\" adicionado com sucesso!")
-        print("\nDigite ENTER para continuar")
-        input()
-    else:
-        print("ID já está em uso!")
-        print("\nDigite ENTER para continuar")
-        input()
+    print("\nDigite ENTER para continuar")
+    input()
 
 
-def update_product():
+def update_product(inventory):
     print("Digite o ID do produto:")
     product_id = int(input())
-    product_index = None
 
     clear_console()
 
-    for (index, product) in enumerate(products):
-        if product["id"] == product_id:
-            product_index = index
-            product_data = [[product["id"], product["name"],
-                             product["price"], product["category"], product["quantity"]]]
-            print(tabulate(product_data, [
-                  "ID", "Nome", "Preço", "Categoria", "Quantidade"]))
+    try:
+        product = inventory.get_product(product_id)
 
-    print("\n")
+        product_data = [[
+                product["id"],
+                product["name"],
+                product["price"],
+                product["category"],
+                product["quantity"]
+            ]]
 
-    if product_index == None:
-        print("Produto não encontrado!\nDigite ENTER para continuar")
+        headers = [
+            "ID",
+            "Nome",
+            "Preço",
+            "Categoria",
+            "Quantidade"
+        ]
+
+        print(tabulate(product_data, headers))
+    except Exception as error:
+        print(str(error))
+        print("\nDigite ENTER para continuar")
         input()
         return
+
+    print("\n")
 
     attributes_table = [
         ["1", "id"],
@@ -163,42 +165,35 @@ def update_product():
 
     clear_console()
 
-    if attribute_name != None:
+    try:
         print("\nDigite o novo valor:")
         new_value = input()
-        products[product_index][attribute_name] = new_value
+        inventory.update_product(product_id, attribute_name, new_value)
         print("\nProduto atualizado com sucesso!")
-    else:
-        print("\nCódigo do atributo inválido!")
+    except Exception as error:
+        print(str(error))
 
     print("\nDigite ENTER para continuar")
     input()
 
 
-def delete_product():
+def delete_product(inventory):
     print("Digite o ID do produto:")
     product_id = int(input())
-    product_index = None
 
     clear_console()
 
-    for (index, product) in enumerate(products):
-        if product["id"] == product_id:
-            product_index = index
-
-    del products[product_index]
-
-    if product_index != None:
+    try:
+        inventory.delete_product(product_id)
         print("Produto removido com sucesso!")
-        print("\nDigite ENTER para continuar")
-        input()
-    else:
-        print("Código do atributo inválido!")
-        print("\nDigite ENTER para continuar")
-        input()
+    except Exception as error:
+        print(str(error))
+
+    print("\nDigite ENTER para continuar")
+    input()
 
 
-def delete_products():
+def delete_products(inventory):
     print("Digite os IDs dos produtos removidos, separados por vírgula:")
     product_ids = input().split(",")
 
@@ -207,26 +202,18 @@ def delete_products():
 
     for product_id in product_ids:
         clear_console()
-        product_found = False
-
-        for (index, product) in enumerate(products):
-            if product["id"] == product_id:
-                product_found = True
-                del products[index]
-
-        if product_found == False:
-            print(
-                f"Não foi possível encontrar um produto com o ID {product_id}")
-            print("\nDigite ENTER para continuar")
-            input()
-        else:
+        try:
+            inventory.delete_product(product_id)
             print(f"Produto de ID {product_id} removido")
-            print("\nDigite ENTER para continuar")
-            input()
+        except Exception as error:
+            print(str(error))
+        
+        print("\nDigite ENTER para continuar")
+        input()
 
 
-def delete_all_products():
-    products.clear()
+def delete_all_products(inventory):
+    inventory.delete_all_products()
     print("Todos os produtos foram removidos com sucesso!")
     print("\nDigite ENTER para continuar")
     input()
@@ -484,6 +471,39 @@ commands = {
 
 
 def main():
+    inventory = Inventory()
+
+    inventory.products = [
+        {
+            "id": 1,
+            "name": "pinho sol",
+            "price": 10,
+            "category": "limpeza",
+            "quantity": 10,
+        },
+        {
+            "id": 2,
+            "name": "água sanitária",
+            "price": 8,
+            "category": "limpeza",
+            "quantity": 100,
+        },
+        {
+            "id": 3,
+            "name": "biscoito água e sal",
+            "price": 2,
+            "category": "comida",
+            "quantity": 500,
+        },
+        {
+            "id": 4,
+            "name": "pasta de dente",
+            "price": 9,
+            "category": "higiene pessoal",
+            "quantity": 50,
+        },
+    ]
+
     clear_console()
 
     print("==== Sistema de controle de estoque ====\n")
@@ -499,7 +519,7 @@ def main():
         if (n == 0):
             break
         else:
-            commands.get(n, commands["invalid"])()
+            commands.get(n, commands["invalid"])(inventory)
 
         clear_console()
 
