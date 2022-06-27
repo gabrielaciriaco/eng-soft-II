@@ -109,5 +109,13 @@ class TestInventory(unittest.TestCase):
             inventory.delete_product(5)
         
         self.assertEqual(str(error.exception), 'Produto não encontrado!')
+
+    def test_delete_all_products_should_update_product_list(self):
+        inventory = Inventory()
+        inventory.create_product(5, "test", 10, "test", 10)
+        inventory.create_product(6, "test_2", 10, "test_2", 10)
+        inventory.delete_all_products()
+        
+        self.assertEqual(inventory.list_products(), [])
         
 
